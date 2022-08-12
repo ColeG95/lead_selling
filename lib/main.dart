@@ -25,6 +25,30 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       home: LeadListScreen(),
+      theme: ThemeData.from(
+        colorScheme: ColorScheme.light(),
+      ).copyWith(
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            primary: Colors.lightBlueAccent,
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            primary: Colors.grey[300],
+            onPrimary: Colors.grey[900],
+            shadowColor: Colors.grey,
+            // elevation: 6,
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+          ),
+        ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+            primary: Colors.purple,
+            backgroundColor: Colors.lightBlueAccent,
+          ),
+        ),
+      ),
     );
   }
 }

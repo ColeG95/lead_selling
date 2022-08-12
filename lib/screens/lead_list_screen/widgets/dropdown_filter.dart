@@ -17,25 +17,35 @@ class DropdownFilter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var type = value.runtimeType;
-    return DropdownButton(
-      value: value,
-      items: <DropdownMenuItem<Object>>[
-        ...allValues
-            .indexedMap(
-              (x, i) => DropdownMenuItem(
-                value: x,
-                child: Text(
-                  allTexts[i],
-                ),
-                onTap: () {
-                  onChanged(x);
-                },
-              ),
-            )
-            .toList(),
-      ],
-      onChanged: (value) {},
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: Colors.grey[300],
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton(
+          dropdownColor: Colors.grey[300],
+          isDense: true,
+          value: value,
+          items: <DropdownMenuItem<Object>>[
+            ...allValues
+                .indexedMap(
+                  (x, i) => DropdownMenuItem(
+                    value: x,
+                    child: Text(
+                      allTexts[i],
+                    ),
+                    onTap: () {
+                      onChanged(x);
+                    },
+                  ),
+                )
+                .toList(),
+          ],
+          onChanged: (value) {},
+        ),
+      ),
     );
   }
 }

@@ -96,6 +96,10 @@ class _LeadListState extends State<LeadList> {
               (lead, i) {
                 bool leadSelected = widget.cart.contains(lead);
                 return TableRow(
+                  decoration: leadSelected
+                      ? BoxDecoration(
+                          color: Colors.lightBlueAccent.withOpacity(.1))
+                      : null,
                   children: [
                     CellText(getRelativeTime(lead.dateAdded.toDate())['text']),
                     CellText(lead.zipCode ?? '?'),
@@ -103,6 +107,7 @@ class _LeadListState extends State<LeadList> {
                     CellText('HBOT'),
                     CellText('\$100'),
                     Checkbox(
+                      activeColor: Colors.lightBlueAccent,
                       value: leadSelected,
                       onChanged: (value) {
                         if (leadSelected) {

@@ -30,6 +30,15 @@ enum RelativeTime {
   Anytime,
 }
 
+Map<RelativeTime, dynamic> relativeTimeDate = {
+  RelativeTime.Last_24_Hours: DateTime.now().subtract(Duration(hours: 24)),
+  RelativeTime.Last_3_Days: DateTime.now().subtract(Duration(hours: 72)),
+  RelativeTime.Last_7_Days: DateTime.now().subtract(Duration(hours: 168)),
+  RelativeTime.Last_2_Weeks: DateTime.now().subtract(Duration(hours: 336)),
+  RelativeTime.Last_4_Weeks: DateTime.now().subtract(Duration(hours: 672)),
+  RelativeTime.Anytime: DateTime.now().subtract(Duration(days: 300)),
+};
+
 enum RelativeDistance {
   Within_20_Miles,
   Within_30_Miles,
