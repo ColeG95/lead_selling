@@ -5,6 +5,7 @@ import 'package:lead_selling/models/coordinates.dart';
 import 'package:lead_selling/models/unpurchased_lead.dart';
 import 'package:lead_selling/screens/lead_list_screen/widgets/dropdown_filter.dart';
 import 'package:lead_selling/screens/lead_list_screen/widgets/lead_list.dart';
+import 'package:lead_selling/widgets/auth_pop_up.dart';
 
 class LeadListScreen extends StatefulWidget {
   const LeadListScreen({
@@ -69,6 +70,21 @@ class _LeadListScreenState extends State<LeadListScreen> {
     });
   }
 
+  void showAuthPopUp() {
+    showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+        title: Text(
+          'title',
+          textAlign: TextAlign.center,
+        ),
+        children: [
+          AuthPopUp(),
+        ],
+      ),
+    );
+  }
+
   void selectTimeFilter(dynamic time) {
     setState(() {
       relativeTime = time;
@@ -79,6 +95,18 @@ class _LeadListScreenState extends State<LeadListScreen> {
   void selectDistanceFilter(dynamic distance) {
     setState(() {
       relativeDistance = distance;
+    });
+  }
+
+  void addToCart(UnpurchasedLead lead) {
+    setState(() {
+      cart.add(lead);
+    });
+  }
+
+  void removeFromCart(UnpurchasedLead lead) {
+    setState(() {
+      cart.remove(lead);
     });
   }
 
@@ -93,12 +121,49 @@ class _LeadListScreenState extends State<LeadListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('test'),
+        actions: [
+          TextButton(
+            onPressed: showAuthPopUp,
+            child: Text(
+              'Sign In/Up',
+              style: TextStyle(fontSize: 16),
+            ),
+          ),
+          SizedBox(width: 20),
+        ],
+        title: Image.asset(
+          'images/hbot leads logo grey[800] ex small.png',
+          height: 40,
+        ),
         backgroundColor: Colors.grey[800],
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
+            Stack(
+              children: [
+                Container(
+                  height: 300,
+                  width: double.infinity,
+                  child: Image.asset(
+                    'images/hbot.jpeg',
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Positioned(
+                  top: 20,
+                  right: 20,
+                  child: Container(
+                    width: 600,
+                    height: 200,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(.5),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+              ],
+            ),
             SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -166,6 +231,8 @@ class _LeadListScreenState extends State<LeadListScreen> {
               child: LeadList(
                 leads: leads,
                 cart: cart,
+                addToCart: addToCart,
+                removeFromCart: removeFromCart,
               ),
             ),
             isLoading

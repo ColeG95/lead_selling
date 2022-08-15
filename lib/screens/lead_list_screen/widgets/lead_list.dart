@@ -8,11 +8,15 @@ import 'cell_text.dart';
 class LeadList extends StatefulWidget {
   final List<UnpurchasedLead> leads;
   final List<UnpurchasedLead> cart;
+  final void Function(UnpurchasedLead) addToCart;
+  final void Function(UnpurchasedLead) removeFromCart;
 
   const LeadList({
     Key? key,
     required this.leads,
     required this.cart,
+    required this.addToCart,
+    required this.removeFromCart,
   }) : super(key: key);
 
   @override
@@ -111,13 +115,9 @@ class _LeadListState extends State<LeadList> {
                       value: leadSelected,
                       onChanged: (value) {
                         if (leadSelected) {
-                          setState(() {
-                            widget.cart.remove(lead);
-                          });
+                          widget.removeFromCart(lead);
                         } else {
-                          setState(() {
-                            widget.cart.add(lead);
-                          });
+                          widget.addToCart(lead);
                         }
                       },
                     ),

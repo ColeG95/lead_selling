@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 extension IndexedIterable<E> on Iterable<E> {
   Iterable<T> indexedMap<T>(T Function(E element, int index) f) {
@@ -45,3 +46,5 @@ enum RelativeDistance {
   Within_50_Miles,
   Anywhere,
 }
+
+const Color themeColor = Colors.lightBlueAccent;
