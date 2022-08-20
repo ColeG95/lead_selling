@@ -47,4 +47,10 @@ enum RelativeDistance {
   Anywhere,
 }
 
+enum AuthState {
+  signIn,
+  signUp,
+  forgotPass,
+}
+
 const Color themeColor = Colors.lightBlueAccent;

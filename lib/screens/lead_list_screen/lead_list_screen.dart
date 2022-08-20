@@ -1,10 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:lead_selling/constants.dart';
 import 'package:lead_selling/models/coordinates.dart';
 import 'package:lead_selling/models/unpurchased_lead.dart';
 import 'package:lead_selling/screens/lead_list_screen/widgets/dropdown_filter.dart';
-import 'package:lead_selling/screens/lead_list_screen/widgets/lead_list.dart';
+import 'package:lead_selling/screens/lead_list_screen/widgets/unpurchased_lead_list.dart';
 import 'package:lead_selling/widgets/auth_pop_up.dart';
 
 class LeadListScreen extends StatefulWidget {
@@ -17,12 +18,14 @@ class LeadListScreen extends StatefulWidget {
 }
 
 class _LeadListScreenState extends State<LeadListScreen> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   List<UnpurchasedLead> leads = [];
   List<UnpurchasedLead> cart = [];
   bool isLoading = false;
   TextEditingController locationController = TextEditingController();
   RelativeTime relativeTime = RelativeTime.Last_2_Weeks;
   RelativeDistance relativeDistance = RelativeDistance.Within_30_Miles;
+  var selected = null;
 
   void loadLeads(Coordinates? buyerCoordinates, String? buyerZip,
       UnpurchasedLead? startAfterLead) async {
@@ -74,10 +77,6 @@ class _LeadListScreenState extends State<LeadListScreen> {
     showDialog(
       context: context,
       builder: (context) => SimpleDialog(
-        title: Text(
-          'title',
-          textAlign: TextAlign.center,
-        ),
         children: [
           AuthPopUp(),
         ],
@@ -122,12 +121,48 @@ class _LeadListScreenState extends State<LeadListScreen> {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          TextButton(
-            onPressed: showAuthPopUp,
-            child: Text(
-              'Sign In/Up',
-              style: TextStyle(fontSize: 16),
-            ),
+          StreamBuilder(
+            stream: _auth.authStateChanges(),
+            builder: (_, snapshot) {
+              if (snapshot.hasData) {
+                return DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    hint: Text(
+                      _auth.currentUser!.email!,
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                    iconEnabledColor: Colors.white,
+                    value: null,
+                    items: [
+                      DropdownMenuItem(
+                        value: 'My Leads',
+                        onTap: () {},
+                        child: const Text('My Leads'),
+                      ),
+                      DropdownMenuItem(
+                        value: 'Sign Out',
+                        onTap: () {
+                          _auth.signOut();
+                        },
+                        child: const Text('Sign Out'),
+                      ),
+                    ],
+                    onChanged: (value) {
+                      // setState(() => selected = value);
+                    },
+                  ),
+                );
+                Text(_auth.currentUser!.email!);
+              } else {
+                return TextButton(
+                  onPressed: showAuthPopUp,
+                  child: Text(
+                    'Sign In/Up',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                );
+              }
+            },
           ),
           SizedBox(width: 20),
         ],
@@ -228,7 +263,7 @@ class _LeadListScreenState extends State<LeadListScreen> {
             ),
             Container(
               margin: const EdgeInsets.all(20),
-              child: LeadList(
+              child: UnpurchasedLeadList(
                 leads: leads,
                 cart: cart,
                 addToCart: addToCart,

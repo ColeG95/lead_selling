@@ -38,6 +38,7 @@ class MyApp extends StatelessWidget {
             primary: Colors.grey[300],
             onPrimary: Colors.grey[900],
             shadowColor: Colors.grey,
+            textStyle: const TextStyle(fontSize: 16),
             // elevation: 6,
             padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
           ),

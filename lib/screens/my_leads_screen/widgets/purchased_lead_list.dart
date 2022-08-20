@@ -1,29 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:lead_selling/models/coordinates.dart';
-import 'package:lead_selling/models/unpurchased_lead.dart';
+import 'package:lead_selling/models/purchased_lead.dart';
 import 'package:lead_selling/constants.dart';
 
-import 'cell_text.dart';
+import 'package:lead_selling/widgets/cell_text.dart';
 
-class LeadList extends StatefulWidget {
-  final List<UnpurchasedLead> leads;
-  final List<UnpurchasedLead> cart;
-  final void Function(UnpurchasedLead) addToCart;
-  final void Function(UnpurchasedLead) removeFromCart;
+class PurchasedLeadList extends StatefulWidget {
+  final List<PurchasedLead> leads;
 
-  const LeadList({
+  const PurchasedLeadList({
     Key? key,
     required this.leads,
-    required this.cart,
-    required this.addToCart,
-    required this.removeFromCart,
   }) : super(key: key);
 
   @override
-  State<LeadList> createState() => _LeadListState();
+  State<PurchasedLeadList> createState() => _PurchasedLeadListState();
 }
 
-class _LeadListState extends State<LeadList> {
+class _PurchasedLeadListState extends State<PurchasedLeadList> {
   Map<String, dynamic> getRelativeTime(DateTime date) {
     var now = DateTime.now();
     final difference = now.difference(date);
@@ -63,6 +57,10 @@ class _LeadListState extends State<LeadList> {
             TableRow(
               children: [
                 CellText(
+                  'Purchased',
+                  textStyle: tableHeader,
+                ),
+                CellText(
                   'Signed up',
                   textStyle: tableHeader,
                 ),
@@ -79,11 +77,11 @@ class _LeadListState extends State<LeadList> {
                   textStyle: tableHeader,
                 ),
                 CellText(
-                  'Price',
+                  'Phone',
                   textStyle: tableHeader,
                 ),
                 CellText(
-                  'Add to Cart',
+                  'Email',
                   textStyle: tableHeader,
                 ),
               ],
@@ -98,29 +96,17 @@ class _LeadListState extends State<LeadList> {
           children: [
             ...widget.leads.indexedMap(
               (lead, i) {
-                bool leadSelected = widget.cart.contains(lead);
                 return TableRow(
-                  decoration: leadSelected
-                      ? BoxDecoration(
-                          color: Colors.lightBlueAccent.withOpacity(.1))
-                      : null,
                   children: [
+                    // TODO change to purchased time
+
+                    CellText(DateTime.now().toString()),
                     CellText(getRelativeTime(lead.dateAdded.toDate())['text']),
                     CellText(lead.zipCode ?? '?'),
                     CellText(lead.condition.toTitleCase()),
                     CellText('HBOT'),
-                    CellText('\$100'),
-                    Checkbox(
-                      activeColor: Colors.lightBlueAccent,
-                      value: leadSelected,
-                      onChanged: (value) {
-                        if (leadSelected) {
-                          widget.removeFromCart(lead);
-                        } else {
-                          widget.addToCart(lead);
-                        }
-                      },
-                    ),
+                    CellText(lead.phone),
+                    CellText(lead.email),
                   ],
                 );
               },
